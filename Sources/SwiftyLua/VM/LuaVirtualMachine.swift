@@ -21,10 +21,6 @@
 import Foundation
 import CLua
 
-// MARK: - Internal Constants
-
-internal let TopOfStack: Int32 = -1
-
 
 /// The  Lua VM.
 ///
@@ -57,65 +53,6 @@ public final class LuaVirtualMachine {
   public func openLibraries(_ libraries: Set<LuaLibrary> = [.all]) {
     libraries.forEach { lib in
       lib.open(self.state)
-    }
-  }
-
-
-  // MARK: - Loading and Executing Lua code
-
-  /// Parses Lua code from a string.
-  ///
-  /// - Parameters:
-  ///   - code: Lua code that shall be loaded
-  ///
-  /// - Throws: `LuaVMError` in cas of an error
-  public func load(code:  String) throws {
-    let err = luaL_loadstring(state, UnsafeMutablePointer<CChar>(mutating: NSString(string: code).utf8String))
-    guard err == .luaOk else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
-    }
-  }
-
-  /// Execute Lua code given in `code`.
-  ///
-  /// - Parameters:
-  ///   - code: Lua code that shall be executed
-  ///
-  /// - Throws: `LuaVMError` in cas of an error
-  public func execute(code: String) throws {
-    try load(code: code)
-
-    let err = lua_pcallk(state, 0, 0, 0, 0, nil)
-    guard err == .luaOk else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
-    }
-  }
-
-  /// Loads Lua code from `file`.
-  ///
-  /// - Parameters:
-  ///   - file: Lua file that shall be read
-  ///
-  /// - Throws: `LuaVMError` in cas of an error
-  public func load(file: String) throws {
-    let err = luaL_loadfilex(state, UnsafeMutablePointer<CChar>(mutating: NSString(string: file).utf8String), nil)
-    guard err == .luaOk else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
-    }
-  }
-
-  /// Execute Lua code which is read from `file`.
-  ///
-  /// - Parameters:
-  ///   - file: Lua file that shall be executed
-  ///
-  /// - Throws: `LuaVMError` in cas of an error
-  public func execute(file: String) throws {
-    try load(file: file)
-
-    let err = lua_pcallk(state, 0, 0, 0, 0, nil)
-    guard err == .luaOk else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
     }
   }
 }

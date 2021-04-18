@@ -24,12 +24,11 @@ import Nimble
 
 @testable import SwiftyLua
 
-final class LuaVMSpec: QuickSpec {
+final class LuaVirtualMachineSpec: QuickSpec {
 
   override func spec() {
 
     describe("Instantiating a LuaVM") {
-
       it("Instantiate a LuaVM") {
         let _ = LuaVirtualMachine()
       }
@@ -45,11 +44,9 @@ final class LuaVMSpec: QuickSpec {
 
         vm.openLibraries([.base, .coroutine, .debug, .io, .math, .os, .package, .string, .table, .utf8])
       }
-
     }
 
     describe("Excuting code") {
-
       it("Excute valid code") {
         let vm = LuaVirtualMachine()
 
@@ -80,7 +77,51 @@ final class LuaVMSpec: QuickSpec {
           fib(35)
           """)
       }
+    }
 
+    describe("Calling Lua function from swift") {
+      it("Call method without parameters and without return values") {
+        let vm = LuaVirtualMachine()
+
+        vm.openLibraries()
+
+        try vm.execute(code: """
+          function no_params_no_return_value()
+          end
+          """)
+
+        try vm.call(function: "no_params_no_return_value", parameters: [])
+      }
+
+      it("Call method one string parameter and without return values") {
+        let vm = LuaVirtualMachine()
+
+        vm.openLibraries()
+
+        try vm.execute(code: """
+          function no_params_no_return_value(param1)
+          end
+          """)
+
+        try vm.call(function: "no_params_no_return_value", parameters: [StringValue("value", name: "param1")])
+      }
+
+      it("Call method one int parameter and an int return value") {
+        let vm = LuaVirtualMachine()
+
+        vm.openLibraries()
+
+        try vm.execute(code: """
+          function inc(n)
+            return n + 1
+          end
+          """)
+
+        let result = IntValue(name: "returnValue")
+        try vm.call(function: "inc", parameters: [IntValue(11, name: "n")], result: [result])
+
+        expect(result.value()).to(be(12))
+      }
     }
   }
 }

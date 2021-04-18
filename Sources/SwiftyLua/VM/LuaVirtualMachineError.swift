@@ -19,6 +19,7 @@
 //
 
 import Foundation
+import CLua
 
 public enum LuaVirtualMachineError: Error {
 
@@ -29,39 +30,31 @@ public enum LuaVirtualMachineError: Error {
   case luaErrErr(reason: String)
   case luaErrFile(reason: String)
   case luaErrUnknown(reason: String)
+  case luaNotImplemented
+  case lusTypeMismatch(name: String)
 
   internal static func from(code: Int32, with reason: String?) -> LuaVirtualMachineError {
     switch code {
-      case .luaYield:
+      case LUA_YIELD:
         return LuaVirtualMachineError.luaYield(reason: reason ?? "Unknown reason")
 
-      case .luaErrRun:
+      case LUA_ERRRUN:
         return LuaVirtualMachineError.luaErrRun(reason: reason ?? "Unknown reason")
 
-      case .luaErrSyntax:
+      case LUA_ERRSYNTAX:
         return LuaVirtualMachineError.luaErrSyntax(reason: reason ?? "Unknown reason")
 
-      case .luaErrMem:
+      case LUA_ERRMEM:
         return LuaVirtualMachineError.luaErrMem(reason: reason ?? "Unknown reason")
 
-      case .luaErrErr:
+      case LUA_ERRERR:
         return LuaVirtualMachineError.luaErrErr(reason: reason ?? "Unknown reason")
 
-      case .luaErrFile:
+      case LUA_ERRFILE:
         return LuaVirtualMachineError.luaErrFile(reason: reason ?? "Unknown reason")
 
       default:
         return LuaVirtualMachineError.luaErrUnknown(reason: "Der König ist tot, es lebe der König!")
     }
   }
-}
-
-internal extension Int32 {
-  static var luaOk: Int32 { 0 }
-  static var luaYield: Int32 { 1 }
-  static var luaErrRun: Int32 { 2 }
-  static var luaErrSyntax: Int32 { 3 }
-  static var luaErrMem: Int32 { 4 }
-  static var luaErrErr: Int32 { 5 }
-  static var luaErrFile = luaErrErr + 1
 }

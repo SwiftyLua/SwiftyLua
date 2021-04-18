@@ -1,8 +1,8 @@
 //
-//  XCTestManifests.swift
+//  ValuesSpec.swift
+//  
 //
-//
-//  Created by Thomas Bonk on 17.04.21.
+//  Created by Thomas Bonk on 18.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,27 @@
 //  limitations under the License.
 //
 
-import XCTest
+import Foundation
+import Quick
+import Nimble
 
-#if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-  return [
-    testCase(LuaVirtualMachineSpec.allTests),
-    textCase(ValuesSpec.allTests)
-  ]
+@testable import SwiftyLua
+
+final class ValuesSpec: QuickSpec {
+
+  override func spec() {
+
+    describe("Test whether returned values are valid") {
+      var stringVal: Value { StringValue("stringVal", name: "stringVal") }
+
+      it("StringValue is valid") {
+        let val: String = stringVal.value()
+
+        expect(val).to(equal("stringVal"))
+        //expect(stringVal.value()).to(be("stringVal"))
+      }
+    }
+
+  }
+
 }
-#endif

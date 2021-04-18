@@ -1,8 +1,8 @@
 //
-//  XCTestManifests.swift
+//  Constants.swift
+//  
 //
-//
-//  Created by Thomas Bonk on 17.04.21.
+//  Created by Thomas Bonk on 18.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,8 @@
 //  limitations under the License.
 //
 
-import XCTest
+import Foundation
 
-#if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-  return [
-    testCase(LuaVirtualMachineSpec.allTests),
-    textCase(ValuesSpec.allTests)
-  ]
-}
-#endif
+// MARK: - Internal Constants
+
+internal let TopOfStack: Int32 = -1

@@ -23,6 +23,14 @@ import CLua
 
 public extension LuaVirtualMachine {
 
+  /// Pops `count` elements from the stack.
+  ///
+  /// - Parameters:
+  ///   - count: number of elements to pop from the stack
+  func pop(count: Int32) {
+    lua_settop(state, -count - 1)
+  }
+
   /// Converts the item at `index` to a string and returns it.
   ///
   /// If the value is a number, then this methods also changes the actual value in the stack to a string.
@@ -39,5 +47,35 @@ public extension LuaVirtualMachine {
     }
 
     return String(cString: value)
+  }
+
+  /// Converts the item at `index` to boolean value and returns it.
+  ///
+  /// - Parameters:
+  ///   - at: The stack index
+  ///
+  /// - Returns: the boolean value
+  func peekBool(at index: Int32) -> Bool {
+    return (lua_toboolean(state, index) == 1)
+  }
+
+  /// Converts the item at `index` to integer value and returns it.
+  ///
+  /// - Parameters:
+  ///   - at: The stack index
+  ///
+  /// - Returns: the integer value
+  func peekInt(at index: Int32) -> Int64 {
+    return lua_tointegerx(state, index, nil)
+  }
+
+  /// Converts the item at `index` to double value and returns it.
+  ///
+  /// - Parameters:
+  ///   - at: The stack index
+  ///
+  /// - Returns: the double value
+  func peekDouble(at index: Int32) -> Double {
+    return lua_tonumberx(state, index, nil)
   }
 }
