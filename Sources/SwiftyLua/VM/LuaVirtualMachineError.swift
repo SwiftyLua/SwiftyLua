@@ -20,33 +20,38 @@
 
 import Foundation
 
-public struct LuaVirtualMachineError: Error {
+public enum LuaVirtualMachineError: Error {
 
-  public internal(set) var code: Int32
-  public internal(set) var errorMessage: String?
+  case luaYield(reason: String)
+  case luaErrRun(reason: String)
+  case luaErrSyntax(reason: String)
+  case luaErrMem(reason: String)
+  case luaErrErr(reason: String)
+  case luaErrFile(reason: String)
+  case luaErrUnknown(reason: String)
 
-  public var localizedDescription: String {
+  internal static func from(code: Int32, with reason: String?) -> LuaVirtualMachineError {
     switch code {
       case .luaYield:
-        return "The thread/coroutine yields: \(errorMessage ?? "Unknown reason.")"
+        return LuaVirtualMachineError.luaYield(reason: reason ?? "Unknown reason")
 
       case .luaErrRun:
-        return "Runtime error: \(errorMessage ?? "Unknown reason.")"
+        return LuaVirtualMachineError.luaErrRun(reason: reason ?? "Unknown reason")
 
       case .luaErrSyntax:
-        return "Syntax error: \(errorMessage ?? "Unknown reason.")"
+        return LuaVirtualMachineError.luaErrSyntax(reason: reason ?? "Unknown reason")
 
       case .luaErrMem:
-        return "Memory allocation error: \(errorMessage ?? "Unknown reason.")"
+        return LuaVirtualMachineError.luaErrMem(reason: reason ?? "Unknown reason")
 
       case .luaErrErr:
-        return "Der König ist tot, es lebe der König! \(errorMessage ?? "Unknown reason.")"
+        return LuaVirtualMachineError.luaErrErr(reason: reason ?? "Unknown reason")
 
       case .luaErrFile:
-        return "File related error: \(errorMessage ?? "Unknown reason.")"
+        return LuaVirtualMachineError.luaErrFile(reason: reason ?? "Unknown reason")
 
       default:
-        return "Unknown error: \(errorMessage ?? "Unknown reason.")"
+        return LuaVirtualMachineError.luaErrUnknown(reason: "Der König ist tot, es lebe der König!")
     }
   }
 }
