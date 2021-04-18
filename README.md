@@ -1,3 +1,3 @@
-# Moanne
+# SwiftyLua
 
-Moanne (Frisian for *moon*) is a Swift wrapper for Lua.
+SwiftyLua is a Swift wrapper and bridge for Lua.
