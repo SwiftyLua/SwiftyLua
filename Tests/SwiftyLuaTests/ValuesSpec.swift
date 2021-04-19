@@ -29,14 +29,14 @@ final class ValuesSpec: QuickSpec {
   override func spec() {
 
     describe("Test whether returned values are valid") {
-      var stringVal: Value { StringValue("stringVal", name: "stringVal") }
+      /*var stringVal: Value { StringValue("stringVal", name: "stringVal") }
 
       it("StringValue is valid") {
         let val: String = stringVal.value()
 
         expect(val).to(equal("stringVal"))
         //expect(stringVal.value()).to(be("stringVal"))
-      }
+      }*/
     }
 
   }

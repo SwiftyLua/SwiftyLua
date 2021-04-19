@@ -31,7 +31,7 @@ public enum LuaVirtualMachineError: Error {
   case luaErrFile(reason: String)
   case luaErrUnknown(reason: String)
   case luaNotImplemented
-  case lusTypeMismatch(name: String)
+  case luaTypeMismatch(name: String)
 
   internal static func from(code: Int32, with reason: String?) -> LuaVirtualMachineError {
     switch code {

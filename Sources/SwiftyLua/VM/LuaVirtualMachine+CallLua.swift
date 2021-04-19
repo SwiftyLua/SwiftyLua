@@ -30,7 +30,7 @@ public extension LuaVirtualMachine {
   ///   - function functionName: the name of the Lua function that shall be called
   ///   - parameters: an array with the parameters that shall be passed to the Lua function
   ///   - result: the return value of the called Lua function
-  func call(function functionName: String, parameters: [Value], result: [Value]) throws {
+  func call(function functionName: String, parameters: [Value], result: inout [Value]) throws {
     lua_getglobal(state, functionName.cString(using: .utf8))
 
     parameters.forEach { parameter in
@@ -42,9 +42,12 @@ public extension LuaVirtualMachine {
       throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
     }
 
+    var returnValues = [Value]()
     try result.forEach { res in
-      try res.pop(self)
+      returnValues.append(try res.pop(self))
     }
+
+    result = returnValues
   }
 
   /// Call the Lua function `functionName` and pass the `parameters` to it.
@@ -53,6 +56,8 @@ public extension LuaVirtualMachine {
   ///   - function functionName: the name of the Lua function that shall be called
   ///   - parameters: an array with the parameters that shall be passed to the Lua function
   func call(function functionName: String, parameters: [Value]) throws {
-    try call(function: functionName, parameters: parameters, result: [Value]())
+    var returnValues = [Value]()
+
+    try call(function: functionName, parameters: parameters, result: &returnValues)
   }
 }

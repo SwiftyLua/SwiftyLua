@@ -20,66 +20,40 @@
 
 import Foundation
 
-/// Base class for a value that shall be passed to the Lua VM.
-///
-/// This class is abstract, i.e. if the method `value()` is not overriden, it raises a `fatalError`.
-public class Value : Hashable {
-
-  // MARK: - Public Properties
-
-  public private(set) var name: String
-
-
-  // MARK: - Initialization
-
-  public init(name: String) {
-    self.name = name
-  }
-
-
-  // MARK: - Public Methods
-
-  /// Return the wrapped value.
-  ///
-  /// This method must be overriden, otherwise it raises a `fatalError`.
-  ///
-  /// - Returns: the wrapped value
-  public func value<T: Hashable>() -> T {
-    fatalError("The method Value.value() must be overriden")
-  }
-
-  /// This method should push tthe value onto the stack of the given VM.
-  ///
-  /// The default implementation of this method does nothing
+/// This enumeration is used to pass values from Swift to Lua functions as well as receiving values from Lua.
+public enum Value {
+  /// Encapsulate a Bool value.
   ///
   /// - Parameters:
-  ///   - vm: the VM
-  public func push(_ vm: LuaVirtualMachine) {
+  ///   - value: the Bool value
+  ///   - name: name of the value
+  case bool(value: Bool = false, name: String = "")
 
-  }
-
-  /// This method should pop the value from the stack of the given VM.
-  ///
-  /// The default implementation throws an error.
+  /// Encapsulate a Double value.
   ///
   /// - Parameters:
-  ///   - vm: the VM
+  ///   - value: the Double value
+  ///   - name: name of the value
+  case double(value: Double = 0.0, name: String = "")
+
+  /// Encapsulate an Int value.
   ///
-  /// - Throws:
-  ///   - `LuaVirtualMachineError.luaNotImplemented`, if the method has not been overriden.
-  ///   - `LuaVirtualMachineError.luaTypeMismatch`, if the type on top of the stack doesn't match with the value type
-  public func pop(_ vm: LuaVirtualMachine) throws {
-    throw LuaVirtualMachineError.luaNotImplemented
-  }
+  /// - Parameters:
+  ///   - value: the Int value
+  ///   - name: name of the value
+  case int(value: Int64 = 0, name: String = "")
 
-  
-  // MARK: - Hashable and Equatable
+  /// Encapsulate a String value.
+  ///
+  /// - Parameters:
+  ///   - value: the String value
+  ///   - name: name of the value
+  case string(value: String = "", name: String = "")
 
-  public static func == (lhs: Value, rhs: Value) -> Bool {
-    return lhs.hashValue == rhs.hashValue
-  }
-
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(value() as AnyHashable)
-  }
+  /// Encapsulate a Void value.
+  ///
+  /// - Parameters:
+  ///   - value: the Void value
+  ///   - name: name of the value
+  case void(value: Void = (), name: String = "")
 }

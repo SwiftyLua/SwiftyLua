@@ -103,7 +103,7 @@ final class LuaVirtualMachineSpec: QuickSpec {
           end
           """)
 
-        try vm.call(function: "no_params_no_return_value", parameters: [StringValue("value", name: "param1")])
+        try vm.call(function: "no_params_no_return_value", parameters: [.string(value: "value", name: "param1")])
       }
 
       it("Call method one int parameter and an int return value") {
@@ -117,10 +117,12 @@ final class LuaVirtualMachineSpec: QuickSpec {
           end
           """)
 
-        let result = IntValue(name: "returnValue")
-        try vm.call(function: "inc", parameters: [IntValue(11, name: "n")], result: [result])
+        var results = [Value.int(value: 0, name: "returnValue")]
+        try vm.call(function: "inc", parameters: [.int(value: 11, name: "n")], result: &results)
 
-        expect(result.value()).to(be(12))
+        let val: Int64 = try results[0].value()
+        expect(val).to(be(12))
+        expect(results[0].name()).to(equal("returnValue"))
       }
     }
   }
