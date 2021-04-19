@@ -31,7 +31,7 @@ public extension LuaVirtualMachine {
   func load(code:  String) throws {
     let err = luaL_loadstring(state, UnsafeMutablePointer<CChar>(mutating: NSString(string: code).utf8String))
     guard err == LUA_OK else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
+      throw LuaVirtualMachineError.from(code: err, with: peekString(at: .TopOfStack))
     }
   }
   
@@ -46,7 +46,7 @@ public extension LuaVirtualMachine {
 
     let err = lua_pcallk(state, 0, 0, 0, 0, nil)
     guard err == LUA_OK else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
+      throw LuaVirtualMachineError.from(code: err, with: peekString(at: .TopOfStack))
     }
   }
 
@@ -59,7 +59,7 @@ public extension LuaVirtualMachine {
   func load(file: String) throws {
     let err = luaL_loadfilex(state, UnsafeMutablePointer<CChar>(mutating: NSString(string: file).utf8String), nil)
     guard err == LUA_OK else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
+      throw LuaVirtualMachineError.from(code: err, with: peekString(at: .TopOfStack))
     }
   }
 
@@ -74,7 +74,7 @@ public extension LuaVirtualMachine {
 
     let err = lua_pcallk(state, 0, 0, 0, 0, nil)
     guard err == LUA_OK else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
+      throw LuaVirtualMachineError.from(code: err, with: peekString(at: .TopOfStack))
     }
   }
 }

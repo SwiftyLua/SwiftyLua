@@ -64,38 +64,38 @@ public extension Value {
   func pop(_ vm: LuaVirtualMachine) throws -> Value {
     switch self {
       case .bool(_, let name):
-        if lua_type(vm.state, TopOfStack) != LUA_TBOOLEAN {
+        if lua_type(vm.state, .TopOfStack) != LUA_TBOOLEAN {
           throw LuaVirtualMachineError.luaTypeMismatch(name: name)
         }
 
-        let v = vm.peekBool(at: TopOfStack)
+        let v = vm.peekBool(at: .TopOfStack)
         vm.pop(count: 1)
         return .bool(value: v, name: name)
 
       case .double(_, let name):
-        if lua_isnumber(vm.state, TopOfStack) == 0 {
+        if lua_isnumber(vm.state, .TopOfStack) == 0 {
           throw LuaVirtualMachineError.luaTypeMismatch(name: name)
         }
 
-        let v = vm.peekDouble(at: TopOfStack)
+        let v = vm.peekDouble(at: .TopOfStack)
         vm.pop(count: 1)
         return .double(value: v, name: name)
 
       case .int(_, let name):
-        if lua_isinteger(vm.state, TopOfStack) == 0 {
+        if lua_isinteger(vm.state, .TopOfStack) == 0 {
           throw LuaVirtualMachineError.luaTypeMismatch(name: name)
         }
 
-        let v = vm.peekInt(at: TopOfStack)
+        let v = vm.peekInt(at: .TopOfStack)
         vm.pop(count: 1)
         return .int(value: v, name: name)
 
       case .string(_, let name):
-        if lua_isstring(vm.state, TopOfStack) == 0 {
+        if lua_isstring(vm.state, .TopOfStack) == 0 {
           throw LuaVirtualMachineError.luaTypeMismatch(name: name)
         }
 
-        let v = vm.peekString(at: TopOfStack)!
+        let v = vm.peekString(at: .TopOfStack)!
         vm.pop(count: 1)
         return .string(value: v, name: name)
 

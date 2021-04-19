@@ -20,6 +20,10 @@
 
 import Foundation
 
-// MARK: - Internal Constants
+// MARK: - Constants
 
-internal let TopOfStack: Int32 = -1
+public extension Int32 {
+
+  /// Index value for the top of stack
+  static var TopOfStack: Int32 { -1 }
+}

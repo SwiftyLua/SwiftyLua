@@ -39,7 +39,7 @@ public extension LuaVirtualMachine {
 
     let err = lua_pcallk(state, Int32(parameters.count), Int32(result.count), 0, 0, nil)
     guard err == LUA_OK else {
-      throw LuaVirtualMachineError.from(code: err, with: peekString(at: TopOfStack))
+      throw LuaVirtualMachineError.from(code: err, with: peekString(at: .TopOfStack))
     }
 
     var returnValues = [Value]()
