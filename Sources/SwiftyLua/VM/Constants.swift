@@ -19,6 +19,7 @@
 //
 
 import Foundation
+import CLua
 
 // MARK: - Constants
 
@@ -26,4 +27,9 @@ public extension Int32 {
 
   /// Index value for the top of stack
   static var TopOfStack: Int32 { -1 }
+  static var RegistryIndex: Int32 = -LUAI_MAXSTACK - 1000
+}
+
+public func UpvalueIndex(_ i: Int32) -> Int32 {
+  return Int32.RegistryIndex - i
 }

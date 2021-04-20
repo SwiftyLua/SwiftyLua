@@ -25,11 +25,18 @@ import CLua
 /// The  Lua VM.
 ///
 /// This class provides the interface for the raw Lua C API
-public final class LuaVirtualMachine {
+public final class LuaVirtualMachine: Hashable {
+
+  // MARK: - Public Properties
+
+  /// The ID of the virtual machine
+  public private(set) var id = UUID()
+
 
   // MARK: - Private Properties
 
   internal var state: OpaquePointer!
+  internal var functions: [String:SwiftFunction] = [:]
 
 
   // MARK: - Initialization
@@ -56,5 +63,16 @@ public final class LuaVirtualMachine {
     libraries.forEach { lib in
       lib.open(self.state)
     }
+  }
+
+
+  // MARK: - Equatable & Hashable
+
+  public static func == (lhs: LuaVirtualMachine, rhs: LuaVirtualMachine) -> Bool {
+    return lhs.id == rhs.id
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
   }
 }

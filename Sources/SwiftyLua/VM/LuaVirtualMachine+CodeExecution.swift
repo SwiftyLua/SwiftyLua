@@ -41,13 +41,23 @@ public extension LuaVirtualMachine {
   ///   - code: Lua code that shall be executed
   ///
   /// - Throws: `LuaVMError` in cas of an error
-  func execute(code: String) throws {
+  func execute(code: String, results: inout [Value]) throws {
     try load(code: code)
 
-    let err = lua_pcallk(state, 0, 0, 0, 0, nil)
+    let err = lua_pcallk(state, 0, Int32(results.count), 0, 0, nil)
     guard err == LUA_OK else {
       throw LuaVirtualMachineError.from(code: err, with: peekString(at: .TopOfStack))
     }
+
+    results = try results.reversed().map { value in
+      try value.pop(self)
+    }
+  }
+
+  func execute(code: String) throws {
+    var res = [Value]()
+
+    try execute(code: code, results: &res)
   }
 
   /// Loads Lua code from `file`.

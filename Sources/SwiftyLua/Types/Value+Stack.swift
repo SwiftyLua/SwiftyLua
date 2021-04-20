@@ -62,11 +62,14 @@ public extension Value {
   ///           and the requested type.
   @discardableResult
   func pop(_ vm: LuaVirtualMachine) throws -> Value {
+    let t = lua_type (vm.state, .TopOfStack)
+    
     switch self {
       case .bool(_, let name):
         if lua_type(vm.state, .TopOfStack) != LUA_TBOOLEAN {
           throw LuaVirtualMachineError.luaTypeMismatch(name: name)
         }
+
 
         let v = vm.peekBool(at: .TopOfStack)
         vm.pop(count: 1)

@@ -78,4 +78,8 @@ public extension LuaVirtualMachine {
   func peekDouble(at index: Int32) -> Double {
     return lua_tonumberx(state, index, nil)
   }
+
+  func pushString(_ str: String) {
+    lua_pushstring(state, str.cString(using: .utf8))
+  }
 }

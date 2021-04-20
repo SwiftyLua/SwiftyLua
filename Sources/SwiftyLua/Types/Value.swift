@@ -22,38 +22,48 @@ import Foundation
 
 /// This enumeration is used to pass values from Swift to Lua functions as well as receiving values from Lua.
 public enum Value {
-  /// Encapsulate a Bool value.
-  ///
-  /// - Parameters:
-  ///   - value: the Bool value
-  ///   - name: name of the value
+  /**
+    Encapsulate a Bool value.
+
+    - Parameters:
+      - value: the Bool value
+      - name: name of the value
+   */
   case bool(value: Bool = false, name: String = "")
 
-  /// Encapsulate a Double value.
-  ///
-  /// - Parameters:
-  ///   - value: the Double value
-  ///   - name: name of the value
+  /**
+    Encapsulate a Double value.
+
+    - Parameters:
+      - value: the Double value
+      - name: name of the value
+   */
   case double(value: Double = 0.0, name: String = "")
 
-  /// Encapsulate an Int value.
-  ///
-  /// - Parameters:
-  ///   - value: the Int value
-  ///   - name: name of the value
+  /**
+    Encapsulate an Int value.
+
+    - Parameters:
+      - value: the Int value
+      - name: name of the value
+   */
   case int(value: Int64 = 0, name: String = "")
 
-  /// Encapsulate a String value.
-  ///
-  /// - Parameters:
-  ///   - value: the String value
-  ///   - name: name of the value
+  /**
+    Encapsulate a String value.
+
+    - Parameters:
+      - value: the String value
+      - name: name of the value
+   */
   case string(value: String = "", name: String = "")
 
-  /// Encapsulate a Void value.
-  ///
-  /// - Parameters:
-  ///   - value: the Void value
-  ///   - name: name of the value
+  /**
+    Encapsulate a Void value.
+
+    - Parameters:
+      - value: the Void value
+      - name: name of the value
+   */
   case void(value: Void = (), name: String = "")
 }
