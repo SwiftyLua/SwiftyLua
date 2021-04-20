@@ -57,6 +57,15 @@ public class SwiftFunction {
 
   // MARK: - Initialization
 
+  /**
+    Initialize teh function descriptor.
+
+    - Parameters:
+      - name: the function name
+      - parameters: an array with function parameters, that defines their types
+      - returnValues: an array with return values
+      - closure: the Swift function or a closure that shall be called from Lua
+   */
   public init(_ name: String, parameters: [Value], returnValues: [Value], closure: @escaping Closure) {
     self.name = name
     self.parameters = parameters

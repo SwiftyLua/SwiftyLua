@@ -61,6 +61,14 @@ private func functionWrapper(_ state: OpaquePointer?) -> Int32 {
 
 public extension LuaVirtualMachine {
 
+  /**
+    Register a Swift function such that it can be called from Lua.
+
+    - Parameters:
+      - function: the function definition
+
+    - Throws: `LuaVirtualMachineError.luaFunctionAlreadyRegistered` if the function has already been registered with a virtual machine.
+   */
   func register(function: SwiftFunction) throws {
     guard function.vm == nil else {
       // function has been reqistered with another VM
