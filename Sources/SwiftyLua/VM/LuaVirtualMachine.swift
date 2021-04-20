@@ -37,9 +37,11 @@ public final class LuaVirtualMachine {
   /// Initialize the Lua VM.
   public init() {
     state = luaL_newstate()
+    Registry.shared.register(vm: self)
   }
 
   deinit {
+    Registry.shared.deregister(vm: self)
     lua_close(state)
   }
 
