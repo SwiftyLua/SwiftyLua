@@ -29,7 +29,7 @@ public enum Value {
       - value: the Bool value
       - name: name of the value
    */
-  case bool(value: Bool = false, name: String = "")
+  case bool(value: Bool = false, name: String = "bool")
 
   /**
     Encapsulate a Double value.
@@ -38,7 +38,7 @@ public enum Value {
       - value: the Double value
       - name: name of the value
    */
-  case double(value: Double = 0.0, name: String = "")
+  case double(value: Double = 0.0, name: String = "double")
 
   /**
     Encapsulate an Int value.
@@ -47,7 +47,7 @@ public enum Value {
       - value: the Int value
       - name: name of the value
    */
-  case int(value: Int64 = 0, name: String = "")
+  case int(value: Int64 = 0, name: String = "int")
 
   /**
     Encapsulate a String value.
@@ -56,7 +56,16 @@ public enum Value {
       - value: the String value
       - name: name of the value
    */
-  case string(value: String = "", name: String = "")
+  case string(value: String = "", name: String = "string")
+
+  /**
+    Enacpsulate a pointer.
+
+   - Parameters:
+     - value: the Pointer value
+     - name: name of the value
+   */
+  case pointer(value: UnsafeMutableRawPointer? = nil, name: String = "pointer")
 
   /**
     Encapsulate a Void value.
@@ -65,5 +74,5 @@ public enum Value {
       - value: the Void value
       - name: name of the value
    */
-  case void(value: Void = (), name: String = "")
+  case void(value: Void = (), name: String = "void")
 }

@@ -55,11 +55,24 @@ public extension Value {
         }
         return value as! T
 
+      case .pointer(let value, _):
+        return value as! T
+
       case .void(let value, let name):
         guard value is T else {
           throw LuaVirtualMachineError.luaTypeMismatch(name: name)
         }
         return value as! T
+    }
+  }
+
+  func object<T: AnyObject>(type: T.Type) throws -> T {
+    switch self {
+      case .pointer(let value, _):
+        return Unmanaged<T>.fromOpaque(value!).takeUnretainedValue()
+
+      default:
+        throw LuaVirtualMachineError.luaTypeMismatch(name: name())
     }
   }
 
@@ -78,6 +91,9 @@ public extension Value {
         return name
 
       case .string(_, let name):
+        return name
+
+      case .pointer(_ , let name):
         return name
 
       case .void(_, let name):

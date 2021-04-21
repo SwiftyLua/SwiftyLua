@@ -22,7 +22,10 @@ import Foundation
 import CLua
 
 private func functionWrapper(_ state: OpaquePointer?) -> Int32 {
-  let swiftFunction = Unmanaged<SwiftFunction>.fromOpaque(lua_touserdata(state, UpvalueIndex(1))).takeUnretainedValue()
+  let swiftFunction =
+    try! Value
+    .pointer(value: lua_touserdata(state, UpvalueIndex(1)), name: "swiftFunctionPtr")
+    .object(type: SwiftFunction.self)
   let vm = swiftFunction.vm!
   var parameterValues: [Value] = []
 

@@ -79,6 +79,10 @@ public extension LuaVirtualMachine {
     return lua_tonumberx(state, index, nil)
   }
 
+  func peekUserData(at index: Int32) -> UnsafeMutableRawPointer {
+    return lua_touserdata(state, index)
+  }
+
   func pushString(_ str: String) {
     lua_pushstring(state, str.cString(using: .utf8))
   }

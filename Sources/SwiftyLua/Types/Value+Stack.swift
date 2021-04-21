@@ -47,6 +47,10 @@ public extension Value {
         lua_pushstring(vm.state, value.cString(using: .utf8))
         break
 
+      case.pointer(let value, _):
+        lua_pushlightuserdata(vm.state, value!)
+        break
+
       case .void(_, _):
         // do nothing
         break
@@ -99,6 +103,14 @@ public extension Value {
         let v = vm.peekString(at: .TopOfStack)!
         vm.pop(count: 1)
         return .string(value: v, name: name)
+
+      case.pointer(_, let name):
+        if lua_isuserdata(vm.state, .TopOfStack) == 0 {
+          throw LuaVirtualMachineError.luaTypeMismatch(name: name)
+        }
+        let v = vm.peekUserData(at: .TopOfStack)
+        vm.pop(count: 1)
+        return .pointer(value: v, name: name)
 
       case .void(_, _):
         return Value.void()
