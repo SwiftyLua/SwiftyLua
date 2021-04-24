@@ -24,7 +24,7 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
   return [
     CustomTypeInstanceSpec.allTests,
-    LuaVMSpec.allTests
+    LuaVMLoadCodeSpec.allTests
   ]
 }
 #endif

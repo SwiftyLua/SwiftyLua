@@ -23,5 +23,5 @@ import Quick
 
 QCKMain([
   CustomTypeInstanceSpec.self,
-  LuaVMSpec.self
+  LuaVMLoadCodeSpec.self
 ])

@@ -1,5 +1,5 @@
 //
-//  LuaVMSpec.swift
+//  LuaVMLoadCodeSpec.swift
 //  
 //
 //  Created by Thomas Bonk on 23.04.21.
@@ -24,7 +24,7 @@ import Nimble
 
 @testable import SwiftyLua
 
-class LuaVMSpec: QuickSpec {
+class LuaVMLoadCodeSpec: QuickSpec {
 
   override func spec() {
 
@@ -84,7 +84,7 @@ class LuaVMSpec: QuickSpec {
         if case VirtualMachine.EvalResults.values(let returnValues) = result {
           expect((returnValues[0] as! Number).toInteger()).to(equal(1337))
         } else {
-          expect("No return value received").to(equal(""))    // How to produce a failure without that heck?
+          assertionFailure("Unexpected result")
         }
       }
 
