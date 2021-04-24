@@ -1,8 +1,8 @@
 //
-//  XCTestManifests.swift
+//  LuaVMError.swift
+//  
 //
-//
-//  Created by Thomas Bonk on 17.04.21.
+//  Created by Thomas Bonk on 23.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,12 @@
 //  limitations under the License.
 //
 
-import XCTest
+import Foundation
 
-#if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-  return [
-    CustomTypeInstanceSpec.allTests,
-    LuaVMSpec.allTests
-  ]
+/**
+ Errors that are thrown by the LuaVM.
+ */
+public enum LuaVMError: Error {
+  /// Error while loading code from a URL or from a string.
+  case loadError(message: String)
 }
-#endif

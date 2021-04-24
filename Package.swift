@@ -14,7 +14,7 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(url: "https://github.com/SwiftyLua/CLua", from: "5.4.3"),
+    .package(url: "https://github.com/SwiftyLua/lua4swift", from: "1.1.0"),
     .package(url: "https://github.com/Quick/Quick", from: "3.1.2"),
     .package(url: "https://github.com/Quick/Nimble", from: "9.0.0")
   ],
@@ -24,7 +24,7 @@ let package = Package(
     .target(
       name: "SwiftyLua",
       dependencies: [
-        "CLua"
+        "lua4swift"
       ]),
     .testTarget(
       name: "SwiftyLuaTests",
@@ -32,6 +32,7 @@ let package = Package(
         "SwiftyLua",
         "Quick",
         "Nimble"
-      ]),
+      ],
+      resources: [.copy("LuaScripts")]),
   ]
 )

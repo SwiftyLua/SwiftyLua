@@ -1,8 +1,8 @@
 //
-//  Constants.swift
+//  CustomTypeInstanceSpec.swift
 //  
 //
-//  Created by Thomas Bonk on 18.04.21.
+//  Created by Thomas Bonk on 23.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +19,25 @@
 //
 
 import Foundation
-import CLua
+import Quick
+import Nimble
 
-// MARK: - Constants
+@testable import SwiftyLua
 
-public extension Int32 {
+class CustomTypeInstanceSpec: QuickSpec {
 
-  /// Index value for the top of stack
-  static var TopOfStack: Int32 { -1 }
-  static var RegistryIndex: Int32 = -LUAI_MAXSTACK - 1000
-}
+  override func spec() {
 
-public func UpvalueIndex(_ i: Int32) -> Int32 {
-  return Int32.RegistryIndex - i
+    describe("The extension of CustomTypeInstance returns the right class name") {
+
+      class MyClass: CustomTypeInstance {
+        // empty by design
+      }
+
+      it("The classname shall be 'MyClass'") {
+        expect(MyClass.luaTypeName()).to(equal("MyClass"))
+      }
+
+    }
+  }
 }

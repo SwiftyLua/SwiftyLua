@@ -1,8 +1,8 @@
 //
-//  XCTestManifests.swift
+//  CustomTypeInstance+luaTypeName.swift
+//  
 //
-//
-//  Created by Thomas Bonk on 17.04.21.
+//  Created by Thomas Bonk on 23.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,19 @@
 //  limitations under the License.
 //
 
-import XCTest
+import Foundation
+import lua4swift
 
-#if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-  return [
-    CustomTypeInstanceSpec.allTests,
-    LuaVMSpec.allTests
-  ]
+public extension CustomTypeInstance {
+
+  /**
+   Return the name of the class that shall appear in the Lua VM.
+
+   The class name is derived from the Swift class name.
+
+   - Returns: The class name
+   */
+  static func luaTypeName() -> String {
+    return String(describing: self.self)
+  }
 }
-#endif

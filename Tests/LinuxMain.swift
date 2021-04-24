@@ -22,6 +22,6 @@ import XCTest
 import Quick
 
 QCKMain([
-  LuaVirtualMachineSpec.self,
-  ValuesSpec.self
+  CustomTypeInstanceSpec.self,
+  LuaVMSpec.self
 ])

@@ -1,8 +1,8 @@
 //
-//  XCTestManifests.swift
+//  ExportedModules.swift
+//  
 //
-//
-//  Created by Thomas Bonk on 17.04.21.
+//  Created by Thomas Bonk on 23.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,4 @@
 //  limitations under the License.
 //
 
-import XCTest
-
-#if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-  return [
-    CustomTypeInstanceSpec.allTests,
-    LuaVMSpec.allTests
-  ]
-}
-#endif
+@_exported import lua4swift
