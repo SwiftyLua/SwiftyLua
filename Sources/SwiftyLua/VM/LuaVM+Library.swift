@@ -1,8 +1,8 @@
 //
-//  CustomTypeInstance+luaTypeName.swift
+//  LuaVM+Library.swift
 //  
 //
-//  Created by Thomas Bonk on 23.04.21.
+//  Created by Thomas Bonk on 25.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,16 +21,25 @@
 import Foundation
 import lua4swift
 
-public extension CustomTypeInstance {
+public extension LuaVM {
 
   /**
-   Return the name of the class that shall appear in the Lua VM.
+   Create a library and call a closure that add functions and custom types to the library.
 
-   The class name is derived from the Swift class name.
-
-   - Returns: The class name
+   - Parameters:
+     - name: the name of the library
+     - registerBlock: the closre that creates registers the function and custom types with the library.
+   - Returns: the created library
    */
-  static func luaTypeName() -> String {
-    return String(describing: self.self)
+  func createLibrary(_ name: String, registerBlock: (Table) -> ()) -> Table {
+    precondition(name.isEmpty)
+
+    let library = vm.createTable()
+
+    registerBlock(library)
+
+    vm.globals[name] = library
+
+    return library
   }
 }

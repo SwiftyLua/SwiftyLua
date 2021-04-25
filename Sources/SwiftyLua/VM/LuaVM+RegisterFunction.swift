@@ -24,47 +24,18 @@ import lua4swift
 public extension LuaVM {
 
   /**
-   Describe a function that shall be registered.
-   */
-  struct FunctionDescriptor {
-
-    // MARK: - Internal Properties
-
-    internal let name: String
-    internal let parameters: [TypeChecker]
-    internal let fn: SwiftFunction
-
-
-    // MARK: - Initialization
-
-    /**
-     Initialize the function descriptor.
-
-     - Parameters:
-       - name: the name of the function
-       - parameters: the types of the parameters that are expected by the function
-       - fn: the Swift function that shall be called, when Lua calls the function
-     */
-    public init(_ name: String, parameters: [TypeChecker] = [], fn: @escaping SwiftFunction) {
-      self.name = name
-      self.parameters = parameters
-      self.fn = fn
-    }
-  }
-
-  /**
    Register a function.
 
    - Parameters:
      - descriptor: the function descriptor
-   
+
    - Returns: an object the represents the function
    */
   @discardableResult
-  func registerFunction(_ descriptor: FunctionDescriptor) -> Function {
+  func registerFunction(_ descriptor: FunctionDescriptor, library: Table? = nil) -> Function {
     let function = vm.createFunction(descriptor.parameters, descriptor.fn)
 
-    vm.globals[descriptor.name] = function
+    (library ?? vm.globals)[descriptor.name] = function
 
     return function
   }
@@ -78,8 +49,8 @@ public extension LuaVM {
    - Returns: the objects the represent the functions
    */
   @discardableResult
-  func registerFunctions(_ descriptors: [FunctionDescriptor]) -> [Function] {
-    return descriptors.map { descriptor in registerFunction(descriptor) }
+  func registerFunctions(_ descriptors: [FunctionDescriptor], library: Table? = nil) -> [Function] {
+    return descriptors.map { descriptor in registerFunction(descriptor, library: library) }
   }
 
 }

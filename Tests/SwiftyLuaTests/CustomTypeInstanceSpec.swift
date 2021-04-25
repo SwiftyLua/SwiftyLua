@@ -30,8 +30,20 @@ class CustomTypeInstanceSpec: QuickSpec {
 
     describe("The extension of CustomTypeInstance returns the right class name") {
 
-      class MyClass: CustomTypeInstance {
-        // empty by design
+      class MyClass: CustomTypeImplementation {
+        static var descriptor: CustomTypeDescriptor {
+          get {
+            return CustomTypeDescriptor(
+              constructor: FunctionDescriptor("new", fn: { args -> SwiftReturnValue in
+                return .value(MyClass())
+              }),
+              functions: [FunctionDescriptor](),
+              methods: [MethodDescriptor]()
+            )
+          }
+        }
+
+        // empty by design*/
       }
 
       it("The classname shall be 'MyClass'") {
