@@ -27,10 +27,13 @@ public extension LuaVM {
   /**
    Register a custom type (class or struct).
 
+   If the parameter `library` is given, the custom type is added to that library.
+
    - Todo: Check whether it is necessary to register the `__gc` meta method
 
    - Parameters:
      - type: the custom type that shall be registered
+     - library: a table that represents a library
    - Returns: The custom type wrapper
    */
   @discardableResult

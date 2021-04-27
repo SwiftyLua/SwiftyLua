@@ -26,8 +26,11 @@ public extension LuaVM {
   /**
    Register a function.
 
+   If the parameter `library` is given, the function is added to that library.
+
    - Parameters:
      - descriptor: the function descriptor
+     - library: a table that represents a library
 
    - Returns: an object the represents the function
    */
@@ -43,8 +46,11 @@ public extension LuaVM {
   /**
    Register functions.
 
+   If the parameter `library` is given, the functions are added to that library.
+
    - Parameters:
      - descriptors: the function descriptors
+     - library: a table that represents a library
 
    - Returns: the objects the represent the functions
    */
