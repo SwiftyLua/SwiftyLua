@@ -31,20 +31,15 @@ class CustomTypeInstanceSpec: QuickSpec {
     describe("The extension of CustomTypeInstance returns the right class name") {
 
       class MyClass: CustomTypeImplementation {
-        static var descriptor: CustomTypeDescriptor {
-          get {
-            return CustomTypeDescriptor(
-              constructor: FunctionDescriptor("new", fn: { args -> SwiftReturnValue in
-                return .value(MyClass())
-              }),
-              functions: [FunctionDescriptor](),
-              methods: [MethodDescriptor]()
-            )
-          }
+        static func descriptor(_ vm: LuaVM) -> CustomTypeDescriptor {
+          return
+            CustomTypeDescriptor(
+              constructor: ConstructorDescriptor { (args: Arguments) -> SwiftReturnValue in
+                return .value(vm.toReference(MyClass()))
+              })
         }
-
-        // empty by design*/
       }
+
 
       it("The classname shall be 'MyClass'") {
         expect(MyClass.luaTypeName()).to(equal("MyClass"))

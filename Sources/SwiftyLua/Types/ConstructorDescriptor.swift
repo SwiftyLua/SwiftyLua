@@ -1,8 +1,8 @@
 //
-//  CustomTypeImplementation.swift
-//  
+//  ConstructorDescriptor.swift
 //
-//  Created by Thomas Bonk on 23.04.21.
+//
+//  Created by Thomas Bonk on 26.04.21.
 //  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,25 +19,30 @@
 //
 
 import Foundation
-import Cocoa
 import lua4swift
 
-/// Protocol that has to be implemented by classes which shall be exposed to Lua
-public protocol CustomTypeImplementation: CustomTypeInstance {
+/**
+ Describe a constructor of a Swift class that shall be registered.
+ */
+public struct ConstructorDescriptor {
 
-  /// return the descriptor for the custom type.
-  static func descriptor(_ vm: LuaVM) -> CustomTypeDescriptor
-}
+  // MARK: - Internal Properties
 
-public extension CustomTypeImplementation {
+  internal var parameters: [TypeChecker]
+  internal var fn: SwiftFunction
+
+
+  // MARK: - Initialization
+
   /**
-   Return the name of the class that shall appear in the Lua VM.
+   Initialize a constructor descriptor.
 
-   The class name is derived from the Swift class name.
-
-   - Returns: The class name
+   - Parameters:
+     - parameters: parameters for the constructor
+     - fn: the Swift function that shall be executed, when the constructor is called from Lua
    */
-  static func luaTypeName() -> String {
-    return String(describing: self.self)
+  public init(parameters: [TypeChecker] = [], fn: @escaping SwiftFunction) {
+    self.parameters = parameters
+    self.fn = fn
   }
 }

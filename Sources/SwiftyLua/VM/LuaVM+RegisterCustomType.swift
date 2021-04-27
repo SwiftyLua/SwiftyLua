@@ -35,18 +35,20 @@ public extension LuaVM {
    */
   @discardableResult
   func registerCustomType<T: CustomTypeImplementation>(type: T.Type, library: Table? = nil) -> CustomType<T> {
+    let tyepDescriptor = T.descriptor(self)
+
     let customType: CustomType<T> = vm.createCustomType { type in
       // Create methods
-      T.descriptor.methods.forEach { descriptor in
+      tyepDescriptor.methods.forEach { descriptor in
         type[descriptor.name] = type.createMethod(descriptor.parameters, descriptor.fn)
       }
     }
 
     // Create constructor
-    customType["new"] = vm.createFunction(T.descriptor.constructor.parameters, T.descriptor.constructor.fn)
+    customType["new"] = vm.createFunction(tyepDescriptor.constructor.parameters, tyepDescriptor.constructor.fn)
 
     // Create class methods
-    T.descriptor.functions.forEach { descriptor in
+    tyepDescriptor.functions.forEach { descriptor in
       customType[descriptor.name] = vm.createFunction(descriptor.parameters, descriptor.fn)
     }
 

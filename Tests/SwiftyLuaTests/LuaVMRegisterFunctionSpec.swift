@@ -35,7 +35,7 @@ class LuaVMRegisterFunctionSpec: QuickSpec {
 
         vm
           .registerFunction(
-            .init("add_integers", parameters: [Number.arg, Number.arg]) { args in
+            .init(name: "add_integers", parameters: [Number.arg, Number.arg]) { args in
               let (a, b) = (args.number, args.number)
 
               return .values([a.toInteger() + b.toInteger()])
@@ -53,10 +53,10 @@ class LuaVMRegisterFunctionSpec: QuickSpec {
 
         vm
           .registerFunctions([
-            .init("one") { args in
+            .init(name: "one") { args in
               return .value(1)
             },
-            .init("two") { args in
+          .init(name: "two") { args in
               return .value(2)
             }])
 

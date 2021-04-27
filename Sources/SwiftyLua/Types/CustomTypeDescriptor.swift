@@ -25,12 +25,32 @@ import lua4swift
  Describe a custom type that shall be registered.
  */
 public struct CustomTypeDescriptor {
+
+  // MARK: - Internal Properties
+
   /// Constructor descriptor for the custom type
-  public var constructor: FunctionDescriptor
+  internal var constructor: ConstructorDescriptor
 
   /// Static functions of the custom type.
-  public var functions: [FunctionDescriptor]
+  internal var functions: [FunctionDescriptor]
 
   /// Instance metheods of the custom type.
-  public var methods: [MethodDescriptor]
+  internal var methods: [MethodDescriptor]
+
+
+  // MARK: - Initialization
+
+  /**
+   Initialize a customn type descriptor.
+
+   - Parameters:
+     - constructor: constructor for the custom type
+     - functions: descriptors for the static functions of the custom type
+     - methods: descriptors for the methods of the custom type
+   */
+  public init(constructor: ConstructorDescriptor, functions: [FunctionDescriptor] = [], methods: [MethodDescriptor] = []) {
+    self.constructor = constructor
+    self.functions = functions
+    self.methods = methods
+  }
 }

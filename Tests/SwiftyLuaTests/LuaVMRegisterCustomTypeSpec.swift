@@ -26,28 +26,30 @@ import Nimble
 
 class Car: CustomTypeImplementation {
 
-  var name: String = ""
+  public var name: String = ""
 
   // MARK: - Descriptor
 
-  static let descriptor: CustomTypeDescriptor = CustomTypeDescriptor(
-    constructor: FunctionDescriptor("new", fn: { args in
-      return .value(Car())
-    }),
-    functions: [],
-    methods: [
-      MethodDescriptor("getName", fn: { instance, args in
-        let car = instance as! Car
-        return .value(car.name)
-      }),
-      MethodDescriptor("setName", fn: { instance, args in
-        let car = instance as! Car
+  static func descriptor(_ vm: LuaVM) -> CustomTypeDescriptor {
+    return CustomTypeDescriptor(
+      constructor: ConstructorDescriptor { (args: Arguments) -> SwiftReturnValue in
+        return .value(vm.toReference(Car()))
+      },
+      functions: [],
+      methods: [
+        MethodDescriptor("getName") { (instance: CustomTypeImplementation, args: Arguments) -> SwiftReturnValue in
+          let car = instance as! Car
+          return .value(car.name)
+        },
+        MethodDescriptor("setName", parameters: [String.arg]) { (instance: CustomTypeImplementation, args: Arguments) -> SwiftReturnValue in
+          let car = instance as! Car
 
-        car.name = args.string
-        return .nothing
-      })
-    ]
-  )
+          car.name = args.string
+          return .nothing
+        }
+      ]
+    )
+  }
 }
 
 class LuaVMRegisterCustomTypeSpec: QuickSpec {
@@ -55,6 +57,48 @@ class LuaVMRegisterCustomTypeSpec: QuickSpec {
   override func spec() {
 
     describe("Register Custom Type") {
+      var vm: LuaVM!
+
+      it("Create Lua Virtual Machine") {
+        vm = LuaVM(openLibs: true)
+      }
+
+      it("Register custom type") {
+        vm.registerCustomType(type: Car.self)
+      }
+
+      it("Run Lua script") {
+        expect {
+          try vm
+            .execute(
+              url: Bundle.module.url(forResource: "register_custom_type", withExtension: "lua", subdirectory: "LuaScripts")!)
+        }.toNot(throwError())
+      }
+
+      it("Retrieve Car object") {
+        expect {
+          if case VirtualMachine.EvalResults.values(let returnValue) = try vm.execute(string: "return myCar;") {
+            let car: Car = (returnValue[0] as! Userdata).toCustomType()
+
+            expect(car.name).to(equal("Volvo"))
+          } else {
+            assertionFailure("Unexpected result")
+          }
+        }.toNot(throwError())
+      }
+
+      it("Retrieve Car name") {
+        expect {
+          if case VirtualMachine.EvalResults.values(let returnValue) = try vm.execute(string: "return myCar:getName()") {
+            let name = (returnValue[0] as! String)
+
+            expect(name).to(equal("Volvo"))
+          } else {
+            assertionFailure("Unexpected result")
+          }
+        }.toNot(throwError())
+      }
+
     }
 
   }

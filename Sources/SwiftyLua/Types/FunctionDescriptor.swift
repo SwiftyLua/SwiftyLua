@@ -39,11 +39,13 @@ public struct FunctionDescriptor {
    Initialize the function descriptor.
 
    - Parameters:
-   - name: the name of the function
-   - parameters: the types of the parameters that are expected by the function
-   - fn: the Swift function that shall be called, when Lua calls the function
+     - name: the name of the function
+     - parameters: the types of the parameters that are expected by the function
+     - fn: the Swift function that shall be called, when Lua calls the function
    */
-  public init(_ name: String, parameters: [TypeChecker] = [], fn: @escaping SwiftFunction) {
+  public init(name: String, parameters: [TypeChecker] = [], fn: @escaping SwiftFunction) {
+    precondition(!name.isEmpty)
+    
     self.name = name
     self.parameters = parameters
     self.fn = fn

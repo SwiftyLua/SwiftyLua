@@ -57,4 +57,11 @@ public class LuaVM {
   public init(vm: VirtualMachine) {
     self.vm = vm
   }
+
+
+  // MARK: - Public Methods
+
+  public func toReference<T: CustomTypeImplementation>(_ obj: T) -> Userdata {
+    return vm.createUserdata(obj)
+  }
 }

@@ -47,6 +47,7 @@ public struct MethodDescriptor {
         _ name: String,
     parameters: [TypeChecker] = [],
             fn: @escaping (CustomTypeImplementation, Arguments) -> SwiftReturnValue) {
+
     precondition(!name.isEmpty)
     self.name = name
     self.parameters = parameters
