@@ -38,7 +38,7 @@ public extension LuaVM {
 
     registerBlock(library)
 
-    vm.globals[name] = library
+    globals[name] = library
 
     return library
   }

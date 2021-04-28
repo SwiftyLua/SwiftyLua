@@ -32,6 +32,7 @@ public extension LuaVM {
    - Returns: the results of the code execution
    - Throws: `LuaVMError.loadError` in case of an error
    */
+  @discardableResult
   func execute(url: URL, args: [Value] = []) throws -> VirtualMachine.EvalResults {
     let result = vm.eval(url, args: args)
 
@@ -51,6 +52,7 @@ public extension LuaVM {
    - Returns: the results of the code execution
    - Throws: `LuaVMError.loadError` in case of an error
    */
+  @discardableResult
   func execute(string: String, args: [Value] = []) throws -> VirtualMachine.EvalResults {
     let result = vm.eval(string, args: args)
 

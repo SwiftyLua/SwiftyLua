@@ -4,28 +4,7 @@ SwiftyLua is a Swift wrapper and bridge for Lua.
 
 ## Usage
 
-### Instantiating a Lua virtual machine
-
-The class `LuaVM` is represents a Lua virtual machine. Its constructor accepts a boolean value that determines whether the standard
-Lua libraries shall be loaded or not. The default value is `true` for loading the standard libraries.
-
-Example:
-```Swift
-import SwiftyLua
-
-let luaVmWithoutLibs = LuaVM(openLibs: false) // Lua VM without opening the standard library
-let luaVmWithLibs = LuaVM(openLibs: true)     // Lua VM with opening the standard library
-```
-
-### Setting a variable
-
-
-
-### Setting a struct
-
-### Registering a native Swift function
-
-### Registering a native Swift type (class or struct)
+You can usage examples in the test spec [UsageSpec.swift](./Tests/SwiftyLuaTests/UsageSpec.swift).
 
 ## Licenses
 

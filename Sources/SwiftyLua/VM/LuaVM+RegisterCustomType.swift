@@ -55,7 +55,7 @@ public extension LuaVM {
       customType[descriptor.name] = vm.createFunction(descriptor.parameters, descriptor.fn)
     }
 
-    (library ?? vm.globals)[T.luaTypeName()] = customType
+    (library ?? globals)[T.luaTypeName()] = customType
 
     return customType
   }

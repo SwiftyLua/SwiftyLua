@@ -38,7 +38,7 @@ public extension LuaVM {
   func registerFunction(_ descriptor: FunctionDescriptor, library: Table? = nil) -> Function {
     let function = vm.createFunction(descriptor.parameters, descriptor.fn)
 
-    (library ?? vm.globals)[descriptor.name] = function
+    (library ?? globals)[descriptor.name] = function
 
     return function
   }

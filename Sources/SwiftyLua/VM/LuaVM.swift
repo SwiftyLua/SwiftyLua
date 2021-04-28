@@ -30,7 +30,18 @@ public class LuaVM {
 
   // MARK: - Public Properties
 
+  /// The Lua virtual machine
   public let vm: VirtualMachine
+
+  /// The globals table
+  public var globals: Table {
+    return vm.globals
+  }
+
+  /// The registry table
+  public var registry: Table {
+    return vm.registry
+  }
 
 
   // MARK: - Initialization
