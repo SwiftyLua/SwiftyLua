@@ -4,7 +4,7 @@ SwiftyLua is a Swift wrapper and bridge for Lua.
 
 ## Usage
 
-You can usage examples in the test spec [UsageSpec.swift](./Tests/SwiftyLuaTests/UsageSpec.swift).
+You can find usage examples in the test spec [UsageSpec.swift](./Tests/SwiftyLuaTests/UsageSpec.swift).
 
 ## Licenses
 
