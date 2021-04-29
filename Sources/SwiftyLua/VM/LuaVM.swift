@@ -44,6 +44,11 @@ public class LuaVM {
   }
 
 
+  // MARK: - Internal Properties
+
+  internal var extensionVariables = [String:Any]()
+
+
   // MARK: - Initialization
 
   /**
@@ -57,6 +62,7 @@ public class LuaVM {
    */
   public init(openLibs: Bool = true) {
     self.vm = VirtualMachine(openLibs: openLibs)
+    VMRegistry.shared.register(vm: self)
   }
 
   /**
@@ -67,6 +73,11 @@ public class LuaVM {
    */
   public init(vm: VirtualMachine) {
     self.vm = vm
+    VMRegistry.shared.register(vm: self)
+  }
+
+  deinit {
+    VMRegistry.shared.deregister(vm: self)
   }
 
 
