@@ -52,6 +52,7 @@ public struct DebugInfo {
     srclen = info.srclen
     currentline = info.currentline
     linedefined = info.linedefined
+    lastlinedefined = info.lastlinedefined
     nups = info.nups
     nparams = info.nparams
     isvararg = (info.isvararg == 1)
