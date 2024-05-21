@@ -2,9 +2,31 @@
 
 SwiftyLua is a Swift wrapper and bridge for Lua.
 
-## Usage
+## Example Usage
 
 You can find usage examples in the test spec [UsageSpec.swift](./Tests/SwiftyLuaTests/UsageSpec.swift).
+
+
+## Installation
+
+Reference this project in your `Package.swift` like so:
+
+```swift
+// swift-tools-version: 5.10
+
+import PackageDescription
+
+let package = Package(
+    name: "LuaTest",
+    dependencies: [ .package(url: "https://github.com/SwiftyLua/SwiftyLua.git", from: "0.0.2") ],
+    targets: [
+        .executableTarget(
+            name: "LuaTest",
+            dependencies: [ .product(name: "SwiftyLua", package: "SwiftyLua") ]
+        ),
+    ]
+)
+```
 
 ## Licenses
 
