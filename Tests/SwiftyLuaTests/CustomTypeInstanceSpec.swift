@@ -26,7 +26,7 @@ import Nimble
 
 class CustomTypeInstanceSpec: QuickSpec {
 
-  override func spec() {
+  override class func spec() {
 
     describe("The extension of CustomTypeInstance returns the right class name") {
 

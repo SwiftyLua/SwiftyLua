@@ -1,10 +1,11 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
   name: "SwiftyLua",
+  platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13),],
   products: [
     // Products define the executables and libraries a package produces, and make them visible to other packages.
     .library(
@@ -14,9 +15,9 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(url: "https://github.com/SwiftyLua/lua4swift", .branch("main")),
-    .package(url: "https://github.com/Quick/Quick", from: "3.1.2"),
-    .package(url: "https://github.com/Quick/Nimble", from: "9.0.0")
+    .package(url: "https://github.com/SwiftyLua/lua4swift", from: "1.1.3"),
+    .package(url: "https://github.com/Quick/Quick", from: "7.6.2"),
+    .package(url: "https://github.com/Quick/Nimble", from: "13.7.1")
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define a module or a test suite.

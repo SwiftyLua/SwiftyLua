@@ -54,7 +54,7 @@ class Car: CustomTypeImplementation {
 
 class LuaVMRegisterCustomTypeSpec: QuickSpec {
 
-  override func spec() {
+  override class func spec() {
 
     describe("Register Custom Type") {
       var vm: LuaVM!

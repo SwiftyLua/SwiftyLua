@@ -25,7 +25,7 @@ import Quick
 
 class UsageSpec: QuickSpec {
 
-  override func spec() {
+  override class func spec() {
 
     describe("Instantiating a Lua virtual machine") {
       /**
