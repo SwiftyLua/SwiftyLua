@@ -1,9 +1,9 @@
 //
 //  LuaVM+Debug.swift
-//  
+//  SwiftyLua
 //
 //  Created by Thomas Bonk on 28.04.21.
-//  Copyright 2021 Thomas Bonk <thomas@meandmymac.de>
+//  Copyright 2025 Thomas Bonk <thomas@meandmymac.de>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
