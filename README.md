@@ -12,7 +12,7 @@ You can find usage examples in the test spec [UsageSpec.swift](./Tests/SwiftyLua
 Reference this project in your `Package.swift` like so:
 
 ```swift
-// swift-tools-version: 5.10
+// swift-tools-version:6.2
 
 import PackageDescription
 
