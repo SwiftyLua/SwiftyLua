@@ -36,37 +36,49 @@ internal class WeakRef<T: AnyObject> {
 }
 
 
-internal class VMRegistry {
+internal final class VMRegistry: @unchecked Sendable {
 
   // MARK: - Public Class Properties
 
-  public static var shared: VMRegistry = { VMRegistry() }()
+  public static let shared: VMRegistry = VMRegistry()
 
 
   // MARK: - Private Properties
 
+  private let lock = NSLock()
   private var registry: [OpaquePointer?:WeakRef<LuaVM>] = [:]
+
+
+  // MARK: - Initialization
+
+  private init() {}
 
 
   // MARK: - Internal Methods
 
   internal func register(vm: LuaVM) {
-    registry[vm.vm.state] = WeakRef(vm)
+    lock.withLock {
+      registry[vm.vm.state] = WeakRef(vm)
+    }
   }
 
   internal func deregister(vm: LuaVM) {
-    guard registry.contains(where: { (key, _) in key == vm.vm.state }) else {
-      return
-    }
+    lock.withLock {
+      guard registry.contains(where: { (key, _) in key == vm.vm.state }) else {
+        return
+      }
 
-    registry.removeValue(forKey: vm.vm.state)
+      registry.removeValue(forKey: vm.vm.state)
+    }
   }
 
   internal func vm(for state: OpaquePointer?) -> LuaVM? {
-    guard registry.contains(where: { (key, _) in key == state }) else {
-      return nil
-    }
+    return lock.withLock {
+      guard registry.contains(where: { (key, _) in key == state }) else {
+        return nil
+      }
 
-    return registry[state]!.ref!
+      return registry[state]!.ref!
+    }
   }
 }
