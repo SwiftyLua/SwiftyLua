@@ -18,10 +18,10 @@
 //  limitations under the License.
 //
 
-import Foundation
 import lua4swift
+import Synchronization
 
-internal class WeakRef<T: AnyObject> {
+internal struct WeakRef<T: AnyObject>: @unchecked Sendable {
 
   // MARK: - Public Properties
 
@@ -35,38 +35,49 @@ internal class WeakRef<T: AnyObject> {
   }
 }
 
+/// Sendable wrapper for the VM registry state, safe because access is always protected by Mutex.
+internal struct RegistryState: @unchecked Sendable {
+  var entries: [OpaquePointer?: WeakRef<LuaVM>] = [:]
+}
 
-internal class VMRegistry {
+
+internal final class VMRegistry: Sendable {
 
   // MARK: - Public Class Properties
 
-  public static var shared: VMRegistry = { VMRegistry() }()
+  public static let shared: VMRegistry = VMRegistry()
 
 
   // MARK: - Private Properties
 
-  private var registry: [OpaquePointer?:WeakRef<LuaVM>] = [:]
+  private let registry = Mutex<RegistryState>(RegistryState())
+
+
+  // MARK: - Initialization
+
+  private init() {}
 
 
   // MARK: - Internal Methods
 
   internal func register(vm: LuaVM) {
-    registry[vm.vm.state] = WeakRef(vm)
+    let key = vm.vm.state
+    let weakRef = WeakRef(vm)
+    registry.withLock { state in
+      state.entries[key] = weakRef
+    }
   }
 
   internal func deregister(vm: LuaVM) {
-    guard registry.contains(where: { (key, _) in key == vm.vm.state }) else {
-      return
+    let key = vm.vm.state
+    registry.withLock { state in
+      _ = state.entries.removeValue(forKey: key)
     }
-
-    registry.removeValue(forKey: vm.vm.state)
   }
 
   internal func vm(for state: OpaquePointer?) -> LuaVM? {
-    guard registry.contains(where: { (key, _) in key == state }) else {
-      return nil
+    return registry.withLock { registryState in
+      registryState.entries[state]?.ref
     }
-
-    return registry[state]!.ref!
   }
 }

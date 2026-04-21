@@ -19,8 +19,8 @@
 //
 
 import Foundation
-import Quick
 import Nimble
+import Quick
 
 @testable import SwiftyLua
 
@@ -57,17 +57,11 @@ class LuaVMRegisterCustomTypeSpec: QuickSpec {
   override class func spec() {
 
     describe("Register Custom Type") {
-      var vm: LuaVM!
 
-      it("Create Lua Virtual Machine") {
-        vm = LuaVM(openLibs: true)
-      }
-
-      it("Register custom type") {
+      it("Create and register custom type, then execute script") {
+        let vm = LuaVM(openLibs: true)
         vm.registerCustomType(type: Car.self)
-      }
 
-      it("Run Lua script") {
         expect {
           try vm
             .execute(
@@ -75,7 +69,14 @@ class LuaVMRegisterCustomTypeSpec: QuickSpec {
         }.toNot(throwError())
       }
 
-      it("Retrieve Car object") {
+      it("Retrieve Car object after execution") {
+        let vm = LuaVM(openLibs: true)
+        vm.registerCustomType(type: Car.self)
+
+        // First execute the script that creates the car
+        _ = try! vm.execute(
+          url: Bundle.module.url(forResource: "register_custom_type", withExtension: "lua", subdirectory: "LuaScripts")!)
+
         expect {
           if case VirtualMachine.EvalResults.values(let returnValue) = try vm.execute(string: "return myCar;") {
             let car: Car = (returnValue[0] as! Userdata).toCustomType()
@@ -87,7 +88,14 @@ class LuaVMRegisterCustomTypeSpec: QuickSpec {
         }.toNot(throwError())
       }
 
-      it("Retrieve Car name") {
+      it("Retrieve Car name using method call") {
+        let vm = LuaVM(openLibs: true)
+        vm.registerCustomType(type: Car.self)
+
+        // First execute the script that creates the car
+        _ = try! vm.execute(
+          url: Bundle.module.url(forResource: "register_custom_type", withExtension: "lua", subdirectory: "LuaScripts")!)
+
         expect {
           if case VirtualMachine.EvalResults.values(let returnValue) = try vm.execute(string: "return myCar:getName()") {
             let name = (returnValue[0] as! String)

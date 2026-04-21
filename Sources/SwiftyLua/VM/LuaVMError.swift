@@ -23,7 +23,7 @@ import Foundation
 /**
  Errors that are thrown by the LuaVM.
  */
-public enum LuaVMError: Error {
+public enum LuaVMError: Error, Sendable {
   /// Error while loading code from a URL or from a string.
   case loadError(message: String)
 }
