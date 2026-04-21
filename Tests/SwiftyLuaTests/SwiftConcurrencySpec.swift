@@ -25,7 +25,7 @@ import Quick
 @testable import SwiftyLua
 
 /// This class demonstrates SwiftyLua's thread safety and compatibility with Swift concurrency
-class SwiftConcurrencySpec: QuickSpec {
+class SwiftConcurrencySpec: AsyncSpec {
 
   override class func spec() {
 
@@ -104,7 +104,7 @@ class SwiftConcurrencySpec: QuickSpec {
         }
       }
 
-      it("Use actor-based VM registry safely") {
+      it("Use Mutex-based VM registry safely") {
         let vm1 = LuaVM(openLibs: true)
         let vm2 = LuaVM(openLibs: true)
 
@@ -112,6 +112,39 @@ class SwiftConcurrencySpec: QuickSpec {
         expect(vm1.vm.state).toNot(beNil())
         expect(vm2.vm.state).toNot(beNil())
         expect(vm1.vm.state).toNot(equal(vm2.vm.state))
+      }
+
+      it("Create isolated VMs concurrently using TaskGroup") {
+        let results = await withTaskGroup(
+          of: (Int, Int64).self,
+          returning: [(Int, Int64)].self
+        ) { group in
+          for i in 0..<5 {
+            group.addTask {
+              let vm = LuaVM(openLibs: true)
+              vm.globals["task_id"] = i
+              let result = try! vm.execute(string: "return task_id * 2")
+              if case VirtualMachine.EvalResults.values(let returnValues) = result {
+                let value = (returnValues[0] as! Number).toInteger()
+                return (i, value)
+              }
+              return (i, -1)
+            }
+          }
+
+          var collected: [(Int, Int64)] = []
+          for await result in group {
+            collected.append(result)
+          }
+          return collected
+        }
+
+        expect(results.count).to(equal(5))
+
+        // Verify each task computed the correct result
+        for (taskId, value) in results {
+          expect(value).to(equal(Int64(taskId * 2)))
+        }
       }
 
     }

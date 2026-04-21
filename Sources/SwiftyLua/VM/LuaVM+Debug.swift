@@ -22,7 +22,7 @@ import Foundation
 import lua4swift
 import CLua
 
-public struct DebugInfo {
+public struct DebugInfo: Sendable {
 
   let event: Int32
   let name: String              /* (n) */
@@ -64,7 +64,7 @@ public struct DebugInfo {
   }
 }
 
-public protocol DebugCallback {
+public protocol DebugCallback: Sendable {
   func debug(vm: LuaVM, info: DebugInfo)
 }
 

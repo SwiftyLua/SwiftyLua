@@ -19,7 +19,6 @@
 //
 
 import Foundation
-import Cocoa
 import lua4swift
 
 /// Protocol that has to be implemented by classes which shall be exposed to Lua
